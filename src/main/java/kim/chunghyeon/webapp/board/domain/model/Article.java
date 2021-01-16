@@ -29,4 +29,9 @@ public class Article {
         this.subject = subject;
         this.content = content;
     }
+
+    public void update(Article article) {
+        this.subject = article.subject;
+        this.content = article.content;
+    }
 }
