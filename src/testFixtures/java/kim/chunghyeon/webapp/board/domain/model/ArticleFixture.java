@@ -1,6 +1,5 @@
 package kim.chunghyeon.webapp.board.domain.model;
 
-import kim.chunghyeon.webapp.board.api.dto.ArticleRequestDtoFixture;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.test.util.ReflectionTestUtils;
