@@ -4,10 +4,12 @@ plugins {
 	id "io.freefair.lombok" version "5.3.0"
 	id 'java'
 	id 'jacoco'
+	id "org.asciidoctor.convert" version "1.5.9.2"
 }
 
 ext {
 	h2Version = "1.4.199"
+	snippetsDir = file('build/generated-snippets')
 }
 
 group = 'kim.chunghyeon'
@@ -25,6 +27,9 @@ repositories {
 }
 
 dependencies {
+	asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
@@ -40,8 +45,15 @@ test {
 	jacoco {
 		excludes = ["**/*Application.java"]
 	}
+
+	outputs.dir snippetsDir
 }
 
 jacocoTestReport {
+	dependsOn test
+}
+
+asciidoctor {
+	inputs.dir snippetsDir
 	dependsOn test
 }

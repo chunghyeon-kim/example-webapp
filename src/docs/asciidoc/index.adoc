@@ -1,0 +1,9 @@
+==== Create article
+
+include::{snippets}/articles/create/http-request.adoc[]
+
+include::{snippets}/articles/create/http-response.adoc[]
+
+include::{snippets}/articles/create/request-fields.adoc[]
+
+include::{snippets}/articles/create/response-fields.adoc[]
