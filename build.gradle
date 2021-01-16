@@ -2,6 +2,11 @@ plugins {
 	id 'org.springframework.boot' version '2.4.2'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'jacoco'
+}
+
+ext {
+	h2Version = "1.4.199"
 }
 
 group = 'kim.chunghyeon'
@@ -19,14 +24,25 @@ repositories {
 }
 
 dependencies {
-//	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	runtimeOnly "com.h2database:h2:${h2Version}"
 }
 
 test {
 	useJUnitPlatform()
+
+	jacoco {
+		excludes = ["**/*Application.java"]
+	}
+}
+
+jacocoTestReport {
+	dependsOn test
 }
