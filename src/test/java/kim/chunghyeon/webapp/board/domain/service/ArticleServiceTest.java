@@ -2,6 +2,8 @@ package kim.chunghyeon.webapp.board.domain.service;
 
 import kim.chunghyeon.webapp.board.api.dto.ArticleRequestDto;
 import kim.chunghyeon.webapp.board.api.dto.ArticleRequestDtoFixture;
+import kim.chunghyeon.webapp.board.api.dto.ArticleResponseDto;
+import kim.chunghyeon.webapp.board.domain.exception.ArticleNotFoundException;
 import kim.chunghyeon.webapp.board.domain.model.Article;
 import kim.chunghyeon.webapp.board.domain.model.ArticleFixture;
 import kim.chunghyeon.webapp.board.domain.model.ArticleRepository;
@@ -18,6 +20,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.util.Optional;
 
 import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -74,5 +77,44 @@ class ArticleServiceTest {
         // then
         verify(articleRepository).save(articleCaptor.capture());
         then(articleCaptor.getValue()).isEqualTo(article);
+    }
+
+    @Test
+    void articleUpdate_nonExistentArticle_ArticleNotFoundException() {
+        long id = 1L;
+
+        given(articleRepository.findById(eq(id))).willReturn(Optional.empty());
+
+        thenThrownBy(() -> articleService.updateArticle(1L, ArticleRequestDtoFixture.create()))
+                .isInstanceOf(ArticleNotFoundException.class);
+    }
+
+    @Test
+    void getArticle_validInput_validOutput() {
+        // given
+        Article article = ArticleFixture.create();
+        long id = article.getId();
+
+        given(articleRepository.findById(eq(id))).willReturn(Optional.of(article));
+
+        // when
+        ArticleResponseDto res = articleService.getArticle(id);
+
+        // then
+        then(res.getId()).isEqualTo(article.getId());
+        then(res.getSubject()).isEqualTo(article.getSubject());
+        then(res.getContent()).isEqualTo(article.getContent());
+        then(res.getCreatedAt()).isEqualTo(article.getCreatedAt());
+        then(res.getUpdatedAt()).isEqualTo(article.getUpdatedAt());
+    }
+
+    @Test
+    void getUpdate_nonExistentArticle_ArticleNotFoundException() {
+        long id = 1L;
+
+        given(articleRepository.findById(eq(id))).willReturn(Optional.empty());
+
+        thenThrownBy(() -> articleService.getArticle(1L))
+                .isInstanceOf(ArticleNotFoundException.class);
     }
 }
