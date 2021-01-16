@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
 
@@ -19,8 +20,8 @@ class ArticleRepositoryTest {
     @Test
     void save_validInput_validOutput() {
         // given
-        Article article = Article.builder().subject("subject").content("content").build();
-        assertThat(article.getId()).isNull();
+        Article article = ArticleFixture.create();
+        ReflectionTestUtils.setField(article, "id", null);
 
         // when
         Article savedArticle = articleRepository.save(article);
