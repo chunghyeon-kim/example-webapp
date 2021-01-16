@@ -5,6 +5,10 @@ plugins {
 	id 'jacoco'
 }
 
+ext {
+	h2Version = "1.4.199"
+}
+
 group = 'kim.chunghyeon'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
@@ -22,12 +26,13 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-	runtimeOnly 'com.h2database:h2'
+	runtimeOnly "com.h2database:h2:${h2Version}"
 }
 
 test {
